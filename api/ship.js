@@ -101,7 +101,10 @@ export class Ship {
   }
 
   orbit(callback, error_handler) {
-    const url = `${SpaceTraders}/my/ships/${this.symbol}/orbit`;
+    if (this.nav.status == "IN_ORBIT")
+      return error_handler("Ship already in orbit.");
+
+    const url = `${SpaceTraders.host}/my/ships/${this.symbol}/orbit`;
     $.ajax({
       url: url,
       method: "POST",
@@ -110,9 +113,12 @@ export class Ship {
         Accept: "application/json",
         Authorization: `Bearer ${My.agent.token}`,
       },
-      success: (response) => {},
+      success: (response) => {
+        callback(response.data);
+      },
+      error: (err) => {
+        error_handler(err);
+      },
     });
   }
-
-  chart(callback, error_handler) {}
 }
