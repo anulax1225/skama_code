@@ -143,4 +143,21 @@ export class Ship {
       },
     });
   }
+
+  navigate(callback, error_handler) {
+    if (this.nav.status != "ORBIT")
+      return error_handler("Ship my be in orbit.");
+
+    const url = `${SpaceTraders.host}/my/ships/${this.symbol}/navigate`;
+
+    $.ajax({
+      url: url,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${My.agent.token}`,
+      },
+    });
+  }
 }
