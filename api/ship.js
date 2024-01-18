@@ -121,4 +121,26 @@ export class Ship {
       },
     });
   }
+
+  dock(callback, error_handler) {
+    if (this.nav.status == "DOCKED")
+      return error_handler("Ship already docked");
+
+    const url = `${SpaceTraders.host}/my/ships/${this.symbol}/dock`;
+    $.ajax({
+      url: url,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: `Bearer ${My.agent.token}`,
+      },
+      success: (response) => {
+        callback(response);
+      },
+      error: (err) => {
+        error_handler(err);
+      },
+    });
+  }
 }

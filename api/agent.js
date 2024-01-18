@@ -1,6 +1,6 @@
 // Copyright © 2023 Entreprise SkamKraft
-'use strict';
-import { SpaceTraders } from "./config.js"
+"use strict";
+import { SpaceTraders } from "./config.js";
 
 export class My {
   static agent = null;
@@ -15,12 +15,12 @@ export class Agent {
     this.credits = agent.credits;
     this.faction = agent.startingFaction;
     this.hq = agent.headquarters;
-    this.ships_cpt = agent.shipCount;   
+    this.ships_cpt = agent.shipCount;
   }
 
   get_agent_system() {
     let metaSystem = this.hq.split("-");
-    return metaSystem[0] + "-" + metaSystem[1]; 
+    return metaSystem[0] + "-" + metaSystem[1];
   }
 }
 
@@ -31,39 +31,39 @@ export class AgentBuilder {
   }
 
   static create(symbol, faction, callback, error_handler) {
-      const url = `${SpaceTraders.host}/register`;
-      $.ajax({
-        url: url,
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        processData: false,
-        data: `{\n  "faction": "${faction}",\n  "symbol": "${symbol}"}`,
-        success: (reponse) => {
-          let agent = new Agent(reponse.data.agent, reponse.data.token)
-          callback(agent);
-        },
-        error: (err) => {
-          error_handler(["Name already took."])
-        }
-      });
+    const url = `${SpaceTraders.host}/register`;
+    $.ajax({
+      url: url,
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      processData: false,
+      data: `{\n  "faction": "${faction}",\n  "symbol": "${symbol}"}`,
+      success: (reponse) => {
+        let agent = new Agent(reponse.data.agent, reponse.data.token);
+        callback(agent);
+      },
+      error: (err) => {
+        error_handler(["Name already took."]);
+      },
+    });
   }
 
-  static get(token, callback, error_handler){
+  static get(token, callback, error_handler) {
     const url = `${SpaceTraders.host}/my/agent`;
     $.ajax({
-        url: url,
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        success: (reponse) => {
-          let agent = new Agent(reponse.data, token);
-          callback(agent);
-        },
-        error: (err) => {
-          error_handler(["Token invalide."]);
-        }
+      url: url,
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      success: (reponse) => {
+        let agent = new Agent(reponse.data, token);
+        callback(agent);
+      },
+      error: (err) => {
+        error_handler(["Token invalide."]);
+      },
     });
   }
 
@@ -73,7 +73,7 @@ export class AgentBuilder {
       url: url,
       method: "GET",
       headers: {
-        Accept: "application/json" 
+        Accept: "application/json",
       },
       success: (reponse) => {
         let agent = new Agent(reponse.data);
@@ -89,11 +89,11 @@ export class AgentBuilder {
       url: url,
       method: "GET",
       headers: {
-        Accept: "application/json" 
+        Accept: "application/json",
       },
       data: data,
       success: (reponse) => {
-        reponse.data.forEach(agent => {
+        reponse.data.forEach((agent) => {
           agents.push(new Agent(agent));
         });
         callback(agents, reponse.meta);
@@ -110,20 +110,23 @@ export class AgentBuilder {
 
   static #r_listing(page, maxPage, agents, callback) {
     if (page < maxPage) {
-      this.list(20, page++,() => {
-        setTimeout(() => {
-          if (!this.end) {
-            callback(agents);
-            agents = [];
-          }
-          if (!this.stopped) this.#r_listing(page++, maxPage, agents, callback, end); 
-        }, 1000);
-      }, agents);
+      this.list(
+        20,
+        page++,
+        () => {
+          setTimeout(() => {
+            if (!this.end) {
+              callback(agents);
+              agents = [];
+            }
+            if (!this.stopped)
+              this.#r_listing(page++, maxPage, agents, callback, this.end);
+          }, 1000);
+        },
+        agents
+      );
     } else {
       callback(agents);
     }
   }
 }
-
-
-
