@@ -146,7 +146,7 @@ export class Ship {
 
   navigate(callback, error_handler) {
     if (this.nav.status != "ORBIT")
-      return error_handler("Ship my be in orbit.");
+      return error_handler("Ship must be in orbit.");
 
     const url = `${SpaceTraders.host}/my/ships/${this.symbol}/navigate`;
 
@@ -157,6 +157,37 @@ export class Ship {
         "Content-Type": "application/json",
         Accept: "application/json",
         Authorization: `Bearer ${My.agent.token}`,
+      },
+      success: (response) => {
+        callback(response);
+      },
+      error: (err) => {
+        error_handler(err);
+      },
+    });
+  }
+
+  refuel(callback, error_handler) {
+    if (this.nav.status != "ORBIT")
+      return error_handler("Ship must be in orbit.");
+
+    const url = `${SpaceTraders.host}/my/ships/${this.symbol}/refuel`;
+
+    $({
+      url: url,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: "Bearer 123",
+      },
+      processData: false,
+      data: '{\n  "units": "100",\n  "fromCargo": false\n}',
+      success: (response) => {
+        callback(response);
+      },
+      error: (err) => {
+        error_handler(err);
       },
     });
   }
