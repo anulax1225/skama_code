@@ -136,7 +136,7 @@ export class Ship {
         Authorization: `Bearer ${My.agent.token}`,
       },
       success: (response) => {
-        callback(response);
+        callback(response.data);
       },
       error: (err) => {
         error_handler(err);
@@ -144,9 +144,9 @@ export class Ship {
     });
   }
 
-  navigate(callback, error_handler) {
-    if (this.nav.status != "ORBIT")
-      return error_handler("Ship must be in orbit.");
+  navigate(waypoint, callback, error_handler) {
+    // if (this.nav.status != "ORBIT")
+    //   return error_handler("Ship must be in orbit.");
 
     const url = `${SpaceTraders.host}/my/ships/${this.symbol}/navigate`;
 
@@ -158,6 +158,8 @@ export class Ship {
         Accept: "application/json",
         Authorization: `Bearer ${My.agent.token}`,
       },
+      processData: false,
+      data: `{\n  "waypointSymbol": "${waypoint}"\n}`,
       success: (response) => {
         callback(response);
       },
