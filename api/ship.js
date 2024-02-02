@@ -101,7 +101,7 @@ export class Ship {
   }
 
   orbit(callback, error_handler) {
-    if (this.nav.status == "IN_ORBIT")
+    if (this.nav.status == "ORBIT")
       return error_handler("Ship already in orbit.");
 
     const url = `${SpaceTraders.host}/my/ships/${this.symbol}/orbit`;
@@ -145,8 +145,8 @@ export class Ship {
   }
 
   navigate(waypoint, callback, error_handler) {
-    // if (this.nav.status != "ORBIT")
-    //   return error_handler("Ship must be in orbit.");
+    if (this.nav.status != "ORBIT")
+      return error_handler("Ship must be in orbit.");
 
     const url = `${SpaceTraders.host}/my/ships/${this.symbol}/navigate`;
 
@@ -175,7 +175,7 @@ export class Ship {
 
     const url = `${SpaceTraders.host}/my/ships/${this.symbol}/refuel`;
 
-    $({
+    $.ajax({
       url: url,
       method: "POST",
       headers: {
