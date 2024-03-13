@@ -4,7 +4,7 @@ export class CanvasRenderer {
   #update_callback = null;
 
   constructor(canvas_tag, width, height) {
-    this.init();
+    this.init(canvas_tag, width, height);
   }
 
   init(canvas_tag, width, height) {
