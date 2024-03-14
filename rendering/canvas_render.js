@@ -29,15 +29,16 @@ export class CanvasRenderer {
 
   obj_from_img(
     path,
-    position,
+    pos,
     options = {
       selectacle: false,
       name: "",
       update: null,
     }
   ) {
+    let canvas = this;
     fabric.Image.fromURL(path, function (img_planet) {
-      let position = canvas_pos(position.x, position.y);
+      let position = canvas.canvas_pos(pos.x, pos.y);
       img_planet.set({
         selectable: options.selectable,
         left: position.x,
@@ -64,7 +65,7 @@ export class CanvasRenderer {
 
   add(canvas_obj) {
     this.canvas_objs.push(canvas_obj);
-    this.canvas.add(canvas_objs);
+    this.canvas.add(canvas_obj);
   }
 
   update(callback) {
