@@ -95,15 +95,15 @@ export class CanvasRenderer {
   }
 
   resize(width, height) {
-    canvas.setWidth(height);
-    canvas.setHeight(width);
-    canvas.renderAll();
+    this.canvas.setWidth(width);
+    this.canvas.setHeight(height);
+    this.canvas.renderAll();
   }
 
   scale(scale_w, scale_h) {
-    canvas.setWidth((window.innerWidth / 100) * scale_w);
-    canvas.setHeight((window.innerHeight / 100) * scale_h);
-    canvas.renderAll();
+    this.canvas.setWidth((window.innerWidth / 100) * scale_w)
+    this.canvas.setHeight((window.innerHeight / 100) * scale_h);
+    this.canvas.renderAll();
   }
 
   start() {
