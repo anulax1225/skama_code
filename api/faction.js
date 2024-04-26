@@ -11,6 +11,7 @@ export class Faction {
     this.description = data.description;
     this.headquarters = data.headquarters;
     this.traits = data.traits;
+    this.isRecruiting = data.isRecruiting;
   }
 
   static get(name, callback, error_handler) {
