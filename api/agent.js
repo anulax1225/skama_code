@@ -2,12 +2,6 @@
 "use strict";
 import { SpaceTraders } from "./config.js";
 
-export class My {
-  static agent = null;
-  static temp_engine = null;
-  static canvas_renderer = null;
-}
-
 export class Agent {
   constructor(agent, token = "") {
     this.token = token;
@@ -101,14 +95,20 @@ export class AgentBuilder {
     });
   }
 
-  static list_all(callback) {
+  stop()
+  {
+    this.stopped = true;
+  }
+  
+  list_all(callback) {
+    this.stopped = false;
     this.list(20, 1, (agents, meta) => {
       let maxPage = meta.total / 20;
       this.#r_listing(2, maxPage, agents, callback);
     });
   }
 
-  static #r_listing(page, maxPage, agents, callback) {
+  #r_listing(page, maxPage, agents, callback) {
     if (page < maxPage) {
       this.list(
         20,
