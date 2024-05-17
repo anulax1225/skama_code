@@ -1,7 +1,7 @@
 // Copyright © 2023 Entreprise SkamKraft
 'use strict';
 import { AgentBuilder } from '../api/agent.js'
-import Strategie from '../commun/strategie.js';
+import Strategie from 'strategie.js';
 
 let strategies = {
     register: [
