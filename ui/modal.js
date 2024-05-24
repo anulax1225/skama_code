@@ -16,7 +16,13 @@ export class Modal {
                     ${reponse}
                 </dialog>
             `);
+            if(this.after_load_callback) this.after_load_callback();
         }, template);
+    }
+
+    after_load(callback)
+    {
+        this.after_load_callback = callback;
     }
 
     on_close(callback) {
