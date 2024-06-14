@@ -1,7 +1,7 @@
 // Copyright © 2023 Entreprise SkamKraft
 'use strict';
-import contracts from "../../controllers/contracts.js";
-import { My } from "../api/agent.js";
+
+import { My } from "../commun/my.js";
 import { SpaceTraders } from "./config.js";
 
 

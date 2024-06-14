@@ -2,7 +2,7 @@
 "use strict";
 
 import { SpaceTraders } from "./config.js";
-import { My } from "./agent.js";
+import { My } from "../commun/my.js";
 
 export class Ship {
   constructor(data) {
