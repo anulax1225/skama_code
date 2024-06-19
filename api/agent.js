@@ -117,7 +117,6 @@ export class AgentBuilder {
           setTimeout(() => {
             if (!this.end) {
               callback(agents);
-              agents = [];
             }
             if (!this.stopped)
               this.#r_listing(page++, maxPage, agents, callback, this.end);
