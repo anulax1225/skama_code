@@ -4,14 +4,9 @@ export class CanvasRenderer {
   #update_callback = null;
 
   constructor(canvas_tag, width, height) {
-    this.init(canvas_tag, width, height);
-  }
-
-  init(canvas_tag, width, height) {
     this.canvas = new fabric.Canvas(canvas_tag, {
       width: width,
       height: height,
-      backgroundColor: "rgba(0, 0, 0, )",
       renderOnAddRemove: true,
       hoverCursor: "pointer",
     });
@@ -22,44 +17,41 @@ export class CanvasRenderer {
     if (this.update_callback) this.update_callback();
     this.canvas_objs.forEach((obj) => {
       if (obj.update) obj.update(obj);
-    });
+    })
     this.canvas.renderAll();
-    if (this.#running) setTimeout(this.#animate, this.#frame_time);
+    if (this.#running) setTimeout(() => { this.#animate() }, this.#frame_time);
   }
 
-  obj_from_img(
-    path,
-    pos,
-    options = {
+  obj_from_img(path, pos, options = {
       selectacle: false,
       name: "",
       update: null,
-    }
-  ) {
+    }) {
     let canvas = this;
     fabric.Image.fromURL(path, function (img_planet) {
-      let position = canvas.canvas_pos(pos.x, pos.y);
+      console.log(options.name, pos);
       img_planet.set({
         selectable: options.selectable,
-        left: position.x,
-        top: position.y,
+        left: pos.x,
+        top: pos.y,
         name: options.name,
         update: options.update,
       });
+      canvas.canvas_obj.push(img_planet);
       canvas.add(img_planet);
     });
   }
 
-  canvas_pos(x, y) {
+  canvas_pos(position) {
     return {
-      x: x + this.canvas.width / 2,
-      y: y + this.canvas.height / 2,
+      x: position.x + this.canvas.width / 2,
+      y: position.y + this.canvas.height / 2,
     };
   }
-  rel_pos(x, y) {
+  rel_pos(position) {
     return {
-      x: x - this.canvas.width / 2,
-      y: y - this.canvas.height / 2,
+      x: position.x - this.canvas.width / 2,
+      y: position.y - this.canvas.height / 2,
     };
   }
 
@@ -76,8 +68,8 @@ export class CanvasRenderer {
     this.canvas.on(event, callback);
   }
 
-  zoom(x, y, scale) {
-    let pos = this.canvas_pos(x, y);
+  zoom(position, scale) {
+    let pos = this.canvas_pos(position);
     this.canvas.zoomToPoint(
       new fabric.Point(pos.x, pos.y),
       this.canvas.getZoom() * scale

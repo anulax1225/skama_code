@@ -70,7 +70,6 @@ export class System {
                 setTimeout(() => {
                     if (!end) {
                         callback(planets);
-                        planets = [];
                     }
                     if (!this.stopped) this.#r_listing(page++, maxPage, planets, callback, end);
                 }, SpaceTraders.timing);
